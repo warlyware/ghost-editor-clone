@@ -5,7 +5,7 @@ var fs = require("fs"),
     marked = require('marked'),
     index = fs.readFileSync('index.html');
 
-  http.createServer(responseHandler).listen(8080);
+  http.createServer(responseHandler).listen(process.env.PORT);
   // var fbRef = new Firebase(process.env.FB_URL);
 
 function responseHandler(req, res) {
