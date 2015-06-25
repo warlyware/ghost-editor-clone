@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ghost Editor Clone</title>
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <!-- Firebase -->
+  <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+  <!-- AngularFire -->
+  <script src="https://cdn.firebase.com/libs/angularfire/1.1.1/angularfire.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script>
+    var text = 'Test';
+    var textInput = 'I am using __markdown__.';
+    
+    var app = angular.module('ghostClone', []);
+    app.controller("ghostCtrl", function($scope, $http, $location, $sce) {
+    // textInput = $scope.textInput;
+
+    $scope.text = text;
+    $http.get('/markdown/' + textInput).
+      success(function(data, status, headers, config) {
+        // this callback will be called asynchronously
+        // when the response is available
+        console.log('ANG ' + data);
+        // $sce.getTrusted($sce.HTML, data);
+        $scope.textMarked = $sce.trustAsHtml(data);
+      }).
+      error(function(data, status, headers, config) {
+        console.log('FAIL' + data);
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
+    });
+    console.log('loaded');
+  </script>
+</head>
+<body  ng-app="ghostClone" ng-controller="ghostCtrl">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <textarea ng-model="textInput"
+                  ng-model-options="{ debounce: 1000 }"
+                  cols="30"
+                  rows="10">
+        </textarea>
+      </div>
+      <!-- <p>{{text}}</p> -->
+      <div class="col-xs-12" ng-bind-html="textMarked">
+        <!-- <p>{{textMarked}}</p> -->
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
