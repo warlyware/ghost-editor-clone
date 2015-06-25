@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/warlyware/ghost-editor-clone#readme",
   "dependencies": {
-    "marked": "^0.3.3"
+    "marked": "^0.3.3",
+    "require": "^2.4.18"
   }
 }

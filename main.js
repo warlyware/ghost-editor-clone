@@ -1,7 +1,6 @@
 var fs = require("fs"), 
     http = require('http'),
     url = require('url'),
-    Firebase = require('firebase'),
     marked = require('marked'),
     index = fs.readFileSync('index.html');
 
