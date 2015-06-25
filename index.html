@@ -11,31 +11,29 @@
   <script src="https://cdn.firebase.com/libs/angularfire/1.1.1/angularfire.min.js"></script>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script>
-    var text = 'Test';
-    var textInput = 'I am using __markdown__.';
-    
+    var text = 'Test';    
     var app = angular.module('ghostClone', []);
     app.controller("ghostCtrl", function($scope, $http, $location, $sce) {
-    // textInput = $scope.textInput;
-
-    $scope.text = text;
-    $http.get('/markdown/' + textInput).
-      success(function(data, status, headers, config) {
-        // this callback will be called asynchronously
-        // when the response is available
-        console.log('ANG ' + data);
-        // $sce.getTrusted($sce.HTML, data);
-        $scope.textMarked = $sce.trustAsHtml(data);
-      }).
-      error(function(data, status, headers, config) {
-        console.log('FAIL' + data);
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-      });
+    $scope.markText = function() {
+      console.log('trying to mark', $scope.textInput);
+      $scope.text = text;
+      $http.get('/markdown/' + $scope.textInput).
+        success(function(data, status, headers, config) {
+          // this callback will be called asynchronously
+          // when the response is available
+          console.log('ANG ' + data);
+          // $sce.getTrusted($sce.HTML, data);
+          $scope.textMarked = $sce.trustAsHtml(data);
+        }).
+        error(function(data, status, headers, config) {
+          console.log('FAIL' + data);
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+        });
+      }
     });
+
     console.log('loaded');
   </script>
 </head>
@@ -44,14 +42,14 @@
     <div class="row">
       <div class="col-xs-12">
         <textarea ng-model="textInput"
-                  ng-model-options="{ debounce: 1000 }"
+                  ng-keyup="markText()"
                   cols="30"
                   rows="10">
         </textarea>
       </div>
-      <!-- <p>{{text}}</p> -->
+      <!-- <p>{{textInput}}</p> -->
       <div class="col-xs-12" ng-bind-html="textMarked">
-        <!-- <p>{{textMarked}}</p> -->
+        <p>{{textMarked}}</p>
       </div>
     </div>
   </div>
